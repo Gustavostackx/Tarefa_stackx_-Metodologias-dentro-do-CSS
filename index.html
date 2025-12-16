@@ -1,109 +1,305 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Wars Store</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quiz com Validação</title>
 
-    <!-- Estilo básico usando BEM -->
-    <style>
-        /* Layout geral */
-        .page {
-            font-family: Arial, sans-serif;
-            background: url("Imagem\ para\ Projeto\ 2.jpg") no-repeat center center fixed;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, #0f1724, #020617);
+  color: #e5e7eb;
+  margin: 0;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
 
-        .form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid #bb86fc;
-            padding: 20px;
-            border-radius: 12px;
-            width: 350px;
-            box-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
-        }
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(122, 0, 255, 0.4);
+  backdrop-filter: blur(10px);
+}
 
-        .form__title {
-            font-size: 26px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #bb86fc;
-            text-shadow: 0 0 8px #bb86fc;
-        }
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #c084ff;
+}
 
-        .form__group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
+.hint {
+  text-align: center;
+  font-size: 14px;
+  color: #cbd5f5;
+  margin-bottom: 30px;
+}
 
-        .form__label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #e0d7ff;
-        }
+.group {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
 
-        .form__input {
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #bb86fc;
-            background-color: rgba(255,255,255,0.2);
-            color: white;
-        }
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
 
-        .form__submit {
-            margin-top: 15px;
-            padding: 10px;
-            width: 100%;
-            background-color: #bb86fc;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #1a0033;
-            box-shadow: 0 0 10px #bb86fc;
-        }
-    </style>
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #fff;
+}
+
+.question-row,
+.checkbox-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #ff7b7b;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  background: linear-gradient(90deg, #7a00ff, #a855f7);
+  color: white;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.result {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(122, 0, 255, 0.15);
+  text-align: center;
+  font-weight: bold;
+}
+
+.followup {
+  margin-top: 12px;
+  padding-left: 10px;
+  border-left: 3px solid rgba(122, 0, 255, 0.5);
+}
+
+/* ===== B.E.M (APLICAÇÃO DA METODOLOGIA) ===== */
+.quiz {}
+.quiz__title {}
+.quiz__hint {}
+.quiz__form {}
+.quiz__group {}
+.quiz__label {}
+.quiz__input {}
+.quiz__options {}
+.quiz__error {}
+.quiz__controls {}
+.quiz__button {}
+.quiz__result {}
+.quiz__followup {}
+</style>
 </head>
-<body class="page">
 
-    <!-- Formulário de venda Star Wars -->
-    <form class="form">
-        <!-- Título do formulário -->
-        <h1 class="form__title">Star Wars Store</h1>
+<body>
 
-        <!-- Campo Nome -->
-        <div class="form__group">
-            <label class="form__label" for="nome">Nome:</label>
-            <input class="form__input" id="nome" type="text" name="nome" required>
-        </div>
+<main class="card quiz">
+  <h1 class="quiz__title">Quiz: Conhecimentos Básicos</h1>
+  <p class="hint quiz__hint">Preencha o formulário. Erros aparecem imediatamente.</p>
 
-        <!-- Campo Email -->
-        <div class="form__group">
-            <label class="form__label" for="email">E-mail:</label>
-            <input class="form__input" id="email" type="email" name="email">
-        </div>
+  <form id="quizForm" class="quiz__form" novalidate>
 
-        <!-- Camppo Idade -->
-        <div class="form__group">
-            <label class="form__label" for="idade">Idade:</label>
-            <input class="form__input" id="idade" type="number" name="idade">
-        </div>
+    <section class="group quiz__group">
+      <label for="name" class="quiz__label">Nome completo</label>
+      <input id="name" type="text" class="quiz__input" />
+      <div id="nameError" class="error quiz__error"></div>
+    </section>
 
-        <!-- Campo Checkbox -->
-        <div class="form__group">
-            <label class="form__label" for="newsletter">Deseja receber novidades?</label>
-            <input id="newsletter" type="checkbox" name="newsletter">
-        </div>
+    <section class="group quiz__group">
+      <label for="email" class="quiz__label">E-mail</label>
+      <input id="email" type="email" class="quiz__input" />
+      <div id="emailError" class="error quiz__error"></div>
+    </section>
 
-        <!-- Botão de Envio -->
-        <input class="form__submit" type="submit" value="Enviar">
-    </form>
+    <section class="group quiz__group">
+      <label class="quiz__label">Qual é a capital do Brasil?</label>
+      <div class="question-row quiz__options">
+        <label><input type="radio" name="capital" value="rio"> Rio de Janeiro</label>
+        <label><input type="radio" name="capital" value="brasilia"> Brasília</label>
+        <label><input type="radio" name="capital" value="sao"> São Paulo</label>
+      </div>
+      <div id="capitalError" class="error quiz__error"></div>
+    </section>
+
+    <section class="group quiz__group">
+      <label class="quiz__label">Quais são linguagens de programação?</label>
+      <div class="checkbox-row quiz__options">
+        <label><input type="checkbox" name="langs" value="python"> Python</label>
+        <label><input type="checkbox" name="langs" value="html"> HTML</label>
+        <label><input type="checkbox" name="langs" value="css"> CSS</label>
+        <label><input type="checkbox" name="langs" value="javascript"> JavaScript</label>
+      </div>
+      <div id="langsError" class="error quiz__error"></div>
+    </section>
+
+    <section class="group quiz__group">
+      <label class="quiz__label">Você já programou antes?</label>
+      <div class="question-row quiz__options">
+        <label><input type="radio" name="hasProg" value="yes"> Sim</label>
+        <label><input type="radio" name="hasProg" value="no"> Não</label>
+      </div>
+      <div id="hasProgError" class="error quiz__error"></div>
+
+      <div id="followUp" class="followup quiz__followup" style="display:none;">
+        <label for="years" class="quiz__label">Tempo de experiência (anos)</label>
+        <input id="years" type="text" class="quiz__input" />
+        <div id="yearsError" class="error quiz__error"></div>
+      </div>
+    </section>
+
+    <div class="controls quiz__controls">
+      <button id="submitBtn" type="submit" class="quiz__button">Enviar</button>
+      <button id="resetBtn" type="button" class="quiz__button">Limpar</button>
+    </div>
+
+    <div id="result" class="result quiz__result" style="display:none;"></div>
+
+  </form>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('quizForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const resultBox = document.getElementById('result');
+
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const yearsInput = document.getElementById('years');
+  const followUp = document.getElementById('followUp');
+
+  const nameError = document.getElementById('nameError');
+  const emailError = document.getElementById('emailError');
+  const capitalError = document.getElementById('capitalError');
+  const langsError = document.getElementById('langsError');
+  const hasProgError = document.getElementById('hasProgError');
+  const yearsError = document.getElementById('yearsError');
+
+  function isEmailValid(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function showError(el, msg) { el.textContent = msg; }
+  function clearError(el) { el.textContent = ''; }
+
+  form.addEventListener('change', (e) => {
+    if (e.target.name === 'hasProg') {
+      followUp.style.display = e.target.value === 'yes' ? 'block' : 'none';
+      yearsInput.value = '';
+      clearError(yearsError);
+    }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let valid = true;
+    let score = 0;
+
+    if (nameInput.value.trim().length < 3) {
+      showError(nameError, 'Informe um nome válido.');
+      valid = false;
+    } else clearError(nameError);
+
+    if (!isEmailValid(emailInput.value.trim())) {
+      showError(emailError, 'Informe um e-mail válido.');
+      valid = false;
+    } else clearError(emailError);
+
+    const capital = form.elements['capital'].value;
+    if (!capital) {
+      showError(capitalError, 'Selecione uma opção.');
+      valid = false;
+    } else {
+      clearError(capitalError);
+      if (capital === 'brasilia') score++;
+    }
+
+    const langs = Array.from(form.querySelectorAll('input[name="langs"]:checked'));
+    if (langs.length === 0) {
+      showError(langsError, 'Selecione ao menos uma opção.');
+      valid = false;
+    } else {
+      clearError(langsError);
+      langs.forEach(l => {
+        if (l.value === 'python' || l.value === 'javascript') score++;
+      });
+    }
+
+    const hasProg = form.elements['hasProg'].value;
+    if (!hasProg) {
+      showError(hasProgError, 'Responda esta pergunta.');
+      valid = false;
+    } else {
+      clearError(hasProgError);
+      if (hasProg === 'yes') {
+        if (!/^\d+(\.\d+)?$/.test(yearsInput.value)) {
+          showError(yearsError, 'Informe um número válido.');
+          valid = false;
+        } else if (Number(yearsInput.value) >= 1) {
+          score++;
+          clearError(yearsError);
+        }
+      }
+    }
+
+    if (!valid) return;
+
+    resultBox.textContent = `Resultado: ${score} ponto(s).`;
+    resultBox.style.display = 'block';
+    submitBtn.disabled = true;
+  });
+
+  resetBtn.addEventListener('click', () => {
+    form.reset();
+    resultBox.style.display = 'none';
+    submitBtn.disabled = false;
+    followUp.style.display = 'none';
+    [nameError,emailError,capitalError,langsError,hasProgError,yearsError].forEach(e => e.textContent = '');
+  });
+});
+</script>
+
 </body>
 </html>
+
+
